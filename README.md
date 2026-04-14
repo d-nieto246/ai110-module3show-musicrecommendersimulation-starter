@@ -17,17 +17,17 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-world recommendation systems like Spotify or YouTube usually combine many signals, such as clicks, likes, skips, watch or listen time, and patterns from similar users, to predict what someone will enjoy next. My version is much simpler and fully content-based: it compares every song to a single taste profile and prioritizes three features, `genre`, `mood`, and `energy`.
 
-Some prompts to answer:
+Each `Song` in my simulation stores `genre`, `mood`, and `energy`, and the `UserProfile` stores a target value for those same three features. My finalized taste profile is `genre = lofi`, `mood = chill`, and `energy = 0.40`. The recommender loops through every song in the CSV and computes three partial scores: a `genre_score` of `1` if the genre matches and `0` otherwise, a `mood_score` of `1` if the mood matches and `0` otherwise, and an `energy_score` of `1 - abs(song_energy - user_energy)` so songs are rewarded for being closer to the user's preferred energy rather than simply being higher or lower.
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+The final scoring rule is a weighted sum:
 
-You can include a simple diagram or bullet list if helpful.
+`final_score = 0.40 * genre_score + 0.35 * mood_score + 0.25 * energy_score`
+
+After every song is scored, the system sorts all songs from highest to lowest score and returns the top recommendations. This design is transparent and easy to explain, but I expect some bias from the simplicity of the rules. For example, it may over-favor songs that share the exact labels in the profile instead of recommending more diverse options.
+
+![Terminal output showing top recommendations](Screenshot.png)
 
 ---
 
